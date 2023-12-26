@@ -1,0 +1,228 @@
+from datetime import datetime, timedelta
+import requests
+import sys
+import os
+import platform
+import climage 
+from tkinter import * 
+from tkinter import messagebox 
+from image import DrawImage
+from PIL import Image
+
+root = Tk() 
+root.title("Python Essentials")
+root.geometry("0x0")
+
+image = Image.open("essentials.png")
+
+image2 = DrawImage(image)
+
+print(str(image2))
+
+class text:
+    reset = '\033[0m'
+    bold = '\033[01m'
+    disable = '\033[02m'
+    underline = '\033[04m'
+    reverse = '\033[07m'
+    strikethrough = '\033[09m'
+    invisible = '\033[08m'
+    black = '\033[30m'
+    red = '\033[31m'
+    green = '\033[32m'
+    orange = '\033[33m'
+    blue = '\033[34m'
+    purple = '\033[35m'
+    cyan = '\033[36m'
+    lightgrey = '\033[37m'
+    darkgrey = '\033[90m'
+    lightred = '\033[91m'
+    lightgreen = '\033[92m'
+
+def __notice(string):
+    print(text.blue + text.bold + "[Essentials] " + text.reset + text.cyan + str(string) + text.reset)
+
+def __error(string):
+    print(text.red + text.bold + "[Essentials] " + text.reset + text.lightred + str(string) + text.reset)
+
+def readFile(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            content = file.read()
+        return content
+    except Exception as e:
+        __error(e)
+
+def writeFile(file_path, content):
+    try:
+        with open(file_path, 'w') as file:
+            file.write(content)
+    except Exception as e:
+        __error(e)
+
+def reverseString(input_str):
+    try:
+        return input_str[::-1]
+    except Exception as e:
+        __error(e)
+
+def capitalString(sentence):
+    try:
+        return ' '.join(word.capitalize() for word in sentence.split())
+    except Exception as e:
+        __error(e)
+
+def lowerString(sentence):
+    try:
+        return ' '.join(word.lower() for word in sentence.split())
+    except Exception as e:
+        __error(e)
+
+def findListMax(lst):
+    try:
+        return max(lst)
+    except Exception as e:
+        __error(e)
+
+def filterListEvenNumbers(lst):
+    try:
+        return [num for num in lst if num % 2 == 0]
+    except Exception as e:
+        __error(e)
+
+def filterListOddNumbers(lst):
+    try:
+        return [num for num in lst if num % 1 == 0]
+    except Exception as e:
+        __error(e)
+
+def average(numbers):
+    try:
+        return sum(numbers) / len(numbers)
+    except Exception as e:
+        __error(e)
+
+def square(num):
+    try:
+        return num ** 2
+    except Exception as e:
+        __error(e)
+
+def currentDate():
+    return datetime.now().date()
+
+def currentDateTime():
+    return datetime.now()
+
+def futureDate(days):
+    try:
+        return datetime.now().date() + timedelta(days=days)
+    except Exception as e:
+        __error
+
+def pastDate(days):
+    try:
+        return datetime.now().date() - timedelta(days=days)
+    except Exception as e:
+        __error(e)
+
+def fetch(api_url):
+    try:
+        response = requests.get(api_url)
+        return response.json()
+    except Exception as e:
+        __error(e)
+
+def getInput(prompt):
+    return input(prompt)
+
+def getIntInput(prompt):
+    try:
+        return int(input(prompt))
+    except ValueError as e:
+        __error(e)
+    
+def createPythonInstance(executable_code):
+    try:
+        __notice("Python Instance Created")
+        exec(executable_code)
+        __notice("Python Instance Ended")
+    except Exception as e:
+        __error(e)
+
+def exitCodeExecution():
+    __notice("Python Code Ended")
+    sys.exit()
+
+def createDirectory(path):
+    try:
+        os.mkdir(path)
+    except Exception as e:
+        __error(e)
+
+def safeArgCheck(arg_number, arg_val, output_err=False):
+    try:
+        return sys.argv[arg_number] == arg_val
+    except Exception as e:
+        if output_err:
+            __error(e)
+        else:
+            pass
+
+def safeArgVal(arg_number, output_err=False):
+    try:
+        return sys.argv[arg_number]
+    except Exception as e:
+        if output_err:
+            __error(e)
+        else:
+            pass
+
+def merge(lst, joiner=""):
+    try:
+        return joiner.join(lst)
+    except Exception as e:
+        __error(e)
+
+def getWebContent(url):
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.text
+        else:
+            __error(f"{response.status_code} - {response.reason}")
+    except requests.RequestException as e:
+        __error(f"Request failed: {e}")
+
+class messageType:
+    info = "info"
+    warning = "warning"
+    error = "error"
+
+def messageBox(title, message, type):
+    try:
+        if type == messageType.info:
+            x = messagebox.showinfo(title, message)
+            x
+            root.destroy()
+        
+        root.mainloop()
+    except Exception as e:
+        __error(e)
+
+
+try:
+    test = sys.argv[1]
+except:
+    print(text.blue + text.bold + "[Taipan Python Interpreter] " + text.reset + text.cyan + f"1.0.2 Essentials: Instance opened at {currentDateTime()}. \nPython Version: " + str(sys.version) + text.reset)
+    while True:
+        try:
+            exec(input(text.blue + text.bold + ">>> " + text.reset))
+        except Exception as e:
+            print(text.red + text.bold + "[Taipan Python Interpreter] " + text.reset + text.lightred + str(e) + text.reset)
+
+file = readFile(test)
+try:
+    exec(file)
+except Exception as e:
+    print(text.red + text.bold + "[Taipan Python Interpreter] " + text.reset + text.lightred + str(e) + text.reset)
